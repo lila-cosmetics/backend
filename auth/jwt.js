@@ -10,7 +10,7 @@ export const generateJwt = (userId) => {
     userId,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+  const token = jwt.sign(payload, process.env.SECRET_KEY, {
     expiresIn: "12h",
   });
   return token;
@@ -22,5 +22,5 @@ export const generateJwt = (userId) => {
  * @returns
  */
 export const verifyJwt = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+  return jwt.verify(token, process.env.SECRET_KEY);
 };
