@@ -100,3 +100,23 @@ export const login = async (req, res) => {
     return errorHanlderUtils.handleInternalServerError(res);
   }
 };
+
+/**
+ * Controller to logout user
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("userToken", {
+      httpOnly: true,
+      secure: false,
+    });
+
+    return res.status(StatusCodes.OK).json({ message: "User logged out!" });
+  } catch (error) {
+    console.log(error);
+    return errorHanlderUtils.handleInternalServerError(res);
+  }
+};
