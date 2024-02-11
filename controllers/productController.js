@@ -43,7 +43,7 @@ export const addNewProduct = async (req, res) => {
       tags,
     });
     const savedProduct = await newProduct.save();
-    res.status(StatusCodes.CREATED).json(savedProduct);
+    res.status(StatusCodes.CREATED).json({message:'the product was added successfully',savedProduct});
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -55,11 +55,13 @@ export const deleteProductById = async (req, res) => {
     try {
       const productId = req.params._id;
       if (!productId) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "Product ID is required" });
+        console.log('the product not found');
+        return res.status(StatusCodes.NOT_FOUND).json({ error: "the product not found check the product id! " });
+        
       }
       const deletedProduct = await Product.findByIdAndDelete(productId);
       if (!deletedProduct) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found" });
+        return res.status(StatusCodes.NOT_FOUND).json({ error: "the Product not found" });
       }
       return res.status(StatusCodes.OK).json({ message: "The product was deleted successfully!" });
     } catch (error) {
@@ -73,7 +75,7 @@ export const deleteProductById = async (req, res) => {
     try {
       const productId = req.params._id;
       if (!productId) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "Product ID is required" });
+        return res.status(StatusCodes.NOT_FOUND).json({ error: "the product not found check the product id!" });
       }
       const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
       if (!updatedProduct) {
