@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
-
 import Product from "../models/Product.js";
+import * as errorHanlderUtils from "../utils/errorHandler.js";
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -14,9 +14,7 @@ export const getAllProducts = async (req, res) => {
         .json({ error: "No products found" });
     }
   } catch (error) {
-    return res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "Internal server error" });
+    return errorHanlderUtils.handleInternalServerError(res);
   }
 };
 
@@ -43,7 +41,9 @@ export const addNewProduct = async (req, res) => {
       tags,
     });
     const savedProduct = await newProduct.save();
-    res.status(StatusCodes.CREATED).json({message:'the product was added successfully',savedProduct});
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "the product was added successfully", savedProduct });
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
@@ -52,38 +52,50 @@ export const addNewProduct = async (req, res) => {
 };
 
 export const deleteProductById = async (req, res) => {
-    try {
-      const productId = req.params._id;
-      if (!productId) {
-        console.log('the product not found');
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "the product not found check the product id! " });
-        
-      }
-      const deletedProduct = await Product.findByIdAndDelete(productId);
-      if (!deletedProduct) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "the Product not found" });
-      }
-      return res.status(StatusCodes.OK).json({ message: "The product was deleted successfully!" });
-    } catch (error) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+  try {
+    const productId = req.params._id;
+    if (!productId) {
+      console.log("the product not found");
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "the product not found check the product id! " });
     }
-  };
-  
-
-
-  export const updateProduct = async (req, res) => {
-    try {
-      const productId = req.params._id;
-      if (!productId) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "the product not found check the product id!" });
-      }
-      const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
-      if (!updatedProduct) {
-        return res.status(StatusCodes.NOT_FOUND).json({ error: "Product not found" });
-      }
-      return res.status(StatusCodes.OK).json({ message: "The product was updated successfully" });
-    } catch (error) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+    if (!deletedProduct) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "the Product not found" });
     }
-  };
-  
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "The product was deleted successfully!" });
+  } catch (error) {
+    return errorHanlderUtils.handleInternalServerError(res);
+  }
+};
+
+export const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params._id;
+    if (!productId) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "the product not found check the product id!" });
+    }
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      req.body,
+      { new: true }
+    );
+    if (!updatedProduct) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Product not found" });
+    }
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: "The product was updated successfully" });
+  } catch (error) {
+    return errorHanlderUtils.handleInternalServerError(res);
+  }
+};
