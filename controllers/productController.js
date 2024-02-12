@@ -2,6 +2,12 @@ import { StatusCodes } from "http-status-codes";
 import Product from "../models/Product.js";
 import * as errorHanlderUtils from "../utils/errorHandler.js";
 
+/**
+ * Controller for getting all the products
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -18,6 +24,11 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+/**
+ * Controller for adding new products
+ * @param {*} req
+ * @param {*} res
+ */
 export const addNewProduct = async (req, res) => {
   try {
     const {
@@ -51,6 +62,12 @@ export const addNewProduct = async (req, res) => {
   }
 };
 
+/**
+ * Controller for deleting products by ID
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const deleteProductById = async (req, res) => {
   try {
     const productId = req.params._id;
@@ -74,6 +91,12 @@ export const deleteProductById = async (req, res) => {
   }
 };
 
+/**
+ * Controller for updating products
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 export const updateProduct = async (req, res) => {
   try {
     const productId = req.params._id;
