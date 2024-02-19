@@ -2,6 +2,11 @@ import { Schema, model } from "mongoose";
 
 const userSchema = new Schema(
   {
+    role: {
+      type: String,
+      enum: ["admin", "user"],
+      default: "user",
+    },
     firstname: {
       type: String,
       required: true,
