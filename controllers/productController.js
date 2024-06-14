@@ -40,9 +40,7 @@ export const getProductById = async (req, res) => {
         .json({ message: "the product not found" });
     }
   } catch (error) {
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: error.message });
+    return errorHanlderUtils.handleInternalServerError(res)
   }
 };
 
