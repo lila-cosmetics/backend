@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllProducts,
+  getProductById,
   addNewProduct,
   deleteProductById,
   updateProduct,
@@ -10,6 +11,7 @@ import { authorizeUser } from "../auth/userAuthorization.js";
 const router = express.Router();
 
 router.get("/getAllProducts", getAllProducts);
+router.get('/getProductById/:_id',getProductById)
 
 /* router.use(authorizeUser);
  */

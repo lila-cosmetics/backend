@@ -25,6 +25,28 @@ export const getAllProducts = async (req, res) => {
 };
 
 /**
+ * controller for getting product by id
+ */
+
+export const getProductById = async (req, res) => {
+  try {
+    const productId = req.params._id; // get product id from URL
+    const productItem = await Product.findById(productId);
+    if (productItem) {
+      res.status(StatusCodes.OK).json(productItem);
+    } else {
+      res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "the product not found" });
+    }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
+
+/**
  * Controller for adding new products
  * @param {*} req
  * @param {*} res

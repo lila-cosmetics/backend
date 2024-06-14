@@ -12,7 +12,7 @@ const productSchema = new Schema(
       required: true,
     },
     price: {
-      type: Schema.Types.Decimal128, // for precise price representation
+      type: Number, 
       required: true,
     },
     type: {
