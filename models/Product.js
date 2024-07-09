@@ -20,7 +20,7 @@ const productSchema = new Schema(
       required: true,
       enum: ["skin", "hair", "beauty"],
     },
-    countInStock: {
+    availableQuantity: {
       type: Number,
       required: true,
       min: 0, // quantity should not be negative- insteade of min:0 can be default:0

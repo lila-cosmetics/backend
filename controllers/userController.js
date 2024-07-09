@@ -120,3 +120,33 @@ export const logout = async (req, res) => {
     return errorHanlderUtils.handleInternalServerError(res);
   }
 };
+
+
+//get all users by Admin
+export const getAllUserProfile= async(req, res)=>{
+
+  try {
+
+    const users = User.find({})
+    if(users){
+      return res.status(StatusCodes.OK).json(users)
+    }else{
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "No Users found" });
+    }
+    
+  } catch (error) {
+    return errorHanlderUtils.handleInternalServerError(res);
+  }
+}
+
+
+export const updateUserProfile = async (req, res)=>{
+
+}
+
+
+export const deleteUser = async (req,res)=>{
+
+}
