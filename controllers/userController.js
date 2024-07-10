@@ -86,7 +86,7 @@ export const login = async (req, res) => {
       }
 
       return res.status(StatusCodes.OK).json({
-        message: `Login successful. Welcome, ${user.firstName} ${user.lastName}`,
+        message: `Login successful. Welcome, ${user.firstname} ${user.lastname}`,
         user_info: {
           userId: user._id,
           firstName: user.firstname,
@@ -142,6 +142,9 @@ export const getAllUserProfile= async(req, res)=>{
 }
 
 
+
+
+/* not completed yet! */
 export const updateUserProfile = async (req, res)=>{
 
 }

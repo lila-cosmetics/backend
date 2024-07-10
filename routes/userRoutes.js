@@ -10,8 +10,8 @@ const router = express.Router();
 router.post("/register", validateUserRules, validator, register);
 router.post("/login", login);
 router.post("/logout", logout); //change get to post request it's more secure
-router.get('/userProfile', getAllUserProfile);
+router.get('/userProfile', getAllUserProfile); //Admin it should be a protected route! 
 router.put('/updateUserProfile', updateUserProfile);
-router.delete('/deleteUser', deleteUser)
+router.delete('/deleteUser', deleteUser) //Admin
 
 export default router;
