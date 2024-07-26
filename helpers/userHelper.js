@@ -6,9 +6,12 @@ import User from "../models/User.js";
  * @returns
  */
 export const uppercaseFirstLetter = (word) => {
+  if (typeof word !== 'string') {
+    // Handle non-string data gracefully (e.g., return empty string)
+    return '';
+  }
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
-
 /**
  * Helper to check if a user exists by email
  * @param {*} email

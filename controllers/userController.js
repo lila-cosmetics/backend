@@ -10,18 +10,21 @@ import * as errorHanlderUtils from "../utils/errorHandler.js";
  * @param {*} res
  * @returns
  */
+
 export const register = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { firstName, lastName, email, password, confirmPassword } = req.body;
 
   //Hash the password
   const hashedPassword = await bcrypt.hash(password, 12);
-
+  const hashedConfirmPassword = await bcrypt.hash(confirmPassword, 12)
+console.log(req.body)
   try {
     const newUser = await User.create({
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
+      confirmPassword: hashedConfirmPassword,
     });
 
     //Returns a bad request if the user does not provide valid data
@@ -43,12 +46,14 @@ export const register = async (req, res) => {
 };
 
 /**
+ *
+ *
  * Controller for user Login
  * @param {*} req
  * @param {*} res
  * @returns
  */
-export const login = async (req, res) => {
+/* export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -99,6 +104,53 @@ export const login = async (req, res) => {
     console.log(error);
     return errorHanlderUtils.handleInternalServerError(res);
   }
+}; */
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  console.log("Received login request:", { email, password }); // Log received data
+  try {
+    const user = await User.findOne({ email: email.toLowerCase() });
+    console.log("User found:", user); // Log found user
+
+    if (!user) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: "The provided email or password doesn't match with system!",
+      });
+    }
+
+    const matchedPassword = await bcrypt.compare(password, user.password);
+    console.log("Password match:", matchedPassword); // Log password match result
+
+    if (matchedPassword) {
+      const token = generateJwt(user._id);
+      console.log("JWT token:", token); // Log generated token
+
+      res.cookie("userToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      });
+
+      return res.status(StatusCodes.OK).json({
+        message: `Login successful. Welcome, ${user.firstname} ${user.lastname}`,
+        user_info: {
+          userId: user._id,
+          firstName: user.firstname,
+          lastName: user.lastname,
+          email: user.email,
+        },
+      });
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: "The provided email or password doesn't match with system!",
+      });
+    }
+  } catch (error) {
+    console.log("error during Login", error);
+    return errorHanlderUtils.handleInternalServerError(res);
+  }
 };
 
 /**
@@ -121,35 +173,23 @@ export const logout = async (req, res) => {
   }
 };
 
-
 //get all users by Admin
-export const getAllUserProfile= async(req, res)=>{
-
+export const getAllUserProfile = async (req, res) => {
   try {
-
-    const users = User.find({})
-    if(users){
-      return res.status(StatusCodes.OK).json(users)
-    }else{
+    const users = User.find({});
+    if (users) {
+      return res.status(StatusCodes.OK).json(users);
+    } else {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ error: "No Users found" });
     }
-    
   } catch (error) {
     return errorHanlderUtils.handleInternalServerError(res);
   }
-}
-
-
-
+};
 
 /* not completed yet! */
-export const updateUserProfile = async (req, res)=>{
+export const updateUserProfile = async (req, res) => {};
 
-}
-
-
-export const deleteUser = async (req,res)=>{
-
-}
+export const deleteUser = async (req, res) => {};

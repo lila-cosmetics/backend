@@ -7,7 +7,7 @@ import { authorizeUser } from "../auth/userAuthorization.js";
 const router = express.Router();
 
 // Unprotected routes
-router.post("/register", validateUserRules, validator, register);
+router.post("/register", register);
 router.post("/login", login);
 router.post("/logout", logout); //change get to post request it's more secure
 router.get('/userProfile', getAllUserProfile); //Admin it should be a protected route! 
