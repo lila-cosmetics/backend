@@ -134,11 +134,11 @@ export const login = async (req, res) => {
       });
 
       return res.status(StatusCodes.OK).json({
-        message: `Login successful. Welcome, ${user.firstname} ${user.lastname}`,
+        message: `Login successful. Welcome, ${user.firstName} ${user.lastName}`,
         user_info: {
           userId: user._id,
-          firstName: user.firstname,
-          lastName: user.lastname,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
         },
       });
@@ -168,7 +168,7 @@ export const logout = async (req, res) => {
 
     return res.status(StatusCodes.OK).json({ message: "User logged out!" });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     return errorHanlderUtils.handleInternalServerError(res);
   }
 };
